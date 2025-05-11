@@ -3,10 +3,8 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable('server_manual', (table) => {
-
-    table.increments('id').primary();
-    table.string('summary').notNullable();
+  return knex.schema.createTable('server_manual_batch', (table) => {
+    table.increments('batch_id').primary();
     table.timestamps(true, true);
   })
 };
@@ -16,5 +14,6 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable('server_manual');
+  return knex.schema.dropTableIfExists('server_manual_batch');
+
 };
