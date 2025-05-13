@@ -1,3 +1,4 @@
 manual.json
 /node_modules
 .env
+*.Identifier
