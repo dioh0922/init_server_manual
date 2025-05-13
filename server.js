@@ -6,6 +6,7 @@ const knexConfig = require('./knexfile');
 const environment = process.env.NODE_ENV || 'development';
 const knex = require('knex')(knexConfig[environment]);
 const app = express();
+const dbClient = require('./module/knexClient');
 
 const hostname = '0.0.0.0';
 const port = 4200;
@@ -14,8 +15,17 @@ app.set('views', path.join(__dirname, 'template'));
 
 app.get('/init', async (req, res) => {
   try {
-    const manuals = await knex('server_manual').select('*');
-    res.render('init', {manuals});
+    dbClient.initManualBatch();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('init error');
+  }
+});
+
+app.get('/list', async (req, res) => {
+  try {
+    const manuals = await dbClient.fetchAllStep();
+    res.render('list', {manuals});
   } catch (err) {
     console.error(err);
     res.status(500).send('Database error');

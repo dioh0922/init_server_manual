@@ -13,7 +13,7 @@
     <% manuals.forEach(function(manual) { %>
       <div class="row ">
         <div class="col">
-          <%= manual.summary %>
+          <%= manual.chapter_id %>:<%= manual.step_number %>「<%= manual.command %>」
         </div>
       </div>  
     <% }); %>
