@@ -1,10 +1,6 @@
 const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
-const knexConfig = require('./knexfile'); 
-
-const environment = process.env.NODE_ENV || 'development';
-const knex = require('knex')(knexConfig[environment]);
 const app = express();
 const dbClient = require('./module/knexClient');
 
@@ -16,6 +12,7 @@ app.set('views', path.join(__dirname, 'template'));
 app.get('/init', async (req, res) => {
   try {
     dbClient.initManualBatch();
+    res.redirect('./list');
   } catch (err) {
     console.error(err);
     res.status(500).send('init error');
@@ -24,11 +21,22 @@ app.get('/init', async (req, res) => {
 
 app.get('/list', async (req, res) => {
   try {
-    const manuals = await dbClient.fetchAllStep();
+    const manuals = await dbClient.fetchAllBatch();
     res.render('list', {manuals});
   } catch (err) {
     console.error(err);
     res.status(500).send('Database error');
+  }
+});
+
+app.get('/detail/:id', async (req, res) => {
+  const id = req.params.id;
+  try{
+    const steps = await dbClient.fetchBatchDetail(id);
+    res.render('detail', {steps});
+  }catch(err){
+    console.error(err);
+    res.status(500).send('detail error');
   }
 });
 

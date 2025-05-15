@@ -9,6 +9,7 @@ exports.up = function(knex) {
     table.integer('step_number').notNullable();
     table.text('command').notNullable();
     table.text('description').nullable();
+    table.boolean('is_delete').notNullable().defaultTo(false);
   })
 };
 

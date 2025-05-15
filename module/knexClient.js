@@ -38,11 +38,19 @@ async function insertStep(chapter_id, step){
   return step_id;
 }
 
-async function fetchAllStep(){
-  return await knex('server_manual_step').select('*');
+async function fetchAllBatch(){
+  return await knex('server_manual_batch').select('*');
+}
+
+async function fetchBatchDetail(id){
+  return await knex('server_manual_step')
+    .join('server_manual_chapter', 'server_manual_step.chapter_id', '=', 'server_manual_chapter.chapter_id')
+    .select('*')
+    .where('batch_id', parseInt(id));
 }
 
 module.exports = {
   initManualBatch,
-  fetchAllStep,
+  fetchAllBatch,
+  fetchBatchDetail,
 };
