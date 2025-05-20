@@ -43,10 +43,22 @@ async function fetchAllBatch(){
 }
 
 async function fetchBatchDetail(id){
-  return await knex('server_manual_step')
+  const list = await knex('server_manual_step')
     .join('server_manual_chapter', 'server_manual_step.chapter_id', '=', 'server_manual_chapter.chapter_id')
     .select('*')
-    .where('batch_id', parseInt(id));
+    .where('batch_id', parseInt(id))
+    .orderBy('server_manual_chapter.chapter_id', 'server_manual_step.step_id');
+  const group = list.reduce((acc, data) => {
+    let filteredGroup = acc.find(item => item.title === data.title);
+    if(!filteredGroup){
+      filteredGroup = {title: data.title, id:data.chapter_id, steps:[]};
+      // 格納用配列にないキーを初期化
+      acc.push(filteredGroup);
+    }
+    filteredGroup.steps.push(data);
+    return acc;
+  }, []);
+  return group;
 }
 
 module.exports = {

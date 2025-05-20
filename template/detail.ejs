@@ -10,19 +10,44 @@
 </head>
 <body>
   <div class="container text-center">
-    <% steps.forEach(function(step) { %>
-      <div class="row ">
-        <div class="col">
-          <%= step.step_id %>:<%= step.step_number %>:「<%= step.command %>」
-          <% if(step.is_delete == 1) { %>
-            o
-          <% } else { %>
-            -
-          <% } %>
+    <div class="accordion" id="step-container">
+      <% steps.forEach(function(chapter) { %>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#<%=chapter.id %>" aria-expanded="false" aria-controls="<%=chapter.id %>">
+              <%= chapter.title %>
+            </button>
+          </h2>
+          <div id="<%=chapter.id %>" class="accordion-collapse show" data-bs-parent="#step-container">
+            <div class="accordion-body">
+              <% chapter.steps.forEach(function(step){ %>
+                <div class="row">
+                  <div class="col">
+                    <%= step.step_id %>： 「<%= step.command %>」
+                  </div>
+                  <div class="col">
+                    <input type="checkbox" value="" <%= step.is_delete === 1 ? 'disabled checked' : '' %> onclick="deleteStep('<%= step.step_id %>')" />
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
         </div>
-      </div>  
-    <% }); %>
-
+      <% }); %>
+    </div>
   </div>
+  <script>
+  function deleteStep(id) {
+    fetch(`./api/delete/${id}`, {
+      method: 'DELETE',
+    })
+    .then(() => {
+      location.reload();
+    })
+    .catch(err => {
+      console.error('エラー:', err);
+    });
+  }
+</script>
 </body>
 </html>
