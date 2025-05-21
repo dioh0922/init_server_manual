@@ -22,10 +22,10 @@
             <div class="accordion-body">
               <% chapter.steps.forEach(function(step){ %>
                 <div class="row">
-                  <div class="col">
+                  <div class="col-sm-10">
                     <%= step.step_id %>： 「<%= step.command %>」
                   </div>
-                  <div class="col">
+                  <div class="col-sm-2">
                     <input type="checkbox" value="" <%= step.is_delete === 1 ? 'disabled checked' : '' %> onclick="deleteStep('<%= step.step_id %>')" />
                   </div>
                 </div>
@@ -38,7 +38,7 @@
   </div>
   <script>
   function deleteStep(id) {
-    fetch(`./api/delete/${id}`, {
+    fetch(`/api/delete/${id}`, {
       method: 'DELETE',
     })
     .then(() => {

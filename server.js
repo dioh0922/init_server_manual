@@ -40,6 +40,17 @@ app.get('/detail/:id', async (req, res) => {
   }
 });
 
+app.delete('/api/delete/:id', async(req, res) => {
+  try{
+    const id = req.params.id;
+    const result = await dbClient.deleteStep(id);
+    res.status(200).send(result);
+  }catch(err){
+    console.log(err);
+    res.status(500).send('delete error');
+  }
+});
+
 app.get('/', async (req, res) => {
   try {
     res.render('index', { });

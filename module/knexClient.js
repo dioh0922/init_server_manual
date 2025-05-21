@@ -61,8 +61,18 @@ async function fetchBatchDetail(id){
   return group;
 }
 
+async function deleteStep(id){
+  const result = await knex('server_manual_step')
+    .where('step_id', parseInt(id))
+    .update({
+      is_delete: 1
+    });
+    return result;
+}
+
 module.exports = {
   initManualBatch,
   fetchAllBatch,
   fetchBatchDetail,
+  deleteStep,
 };
