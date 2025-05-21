@@ -11,7 +11,7 @@ app.set('views', path.join(__dirname, 'template'));
 
 app.get('/init', async (req, res) => {
   try {
-    dbClient.initManualBatch();
+    await dbClient.initManualBatch();
     res.redirect('./list');
   } catch (err) {
     console.error(err);
