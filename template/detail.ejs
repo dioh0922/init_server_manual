@@ -22,10 +22,13 @@
             <div class="accordion-body">
               <% chapter.steps.forEach(function(step){ %>
                 <div class="row">
-                  <div class="col-sm-10">
+                  <div class="col-sm-8">
                     <%= step.step_id %>： 「<%= step.command %>」
                   </div>
-                  <div class="col-sm-2">
+                  <div class="col-sm-3">
+                    <%= step.description %>
+                  </div>
+                  <div class="col-sm-1">
                     <input type="checkbox" value="" <%= step.is_delete === 1 ? 'disabled checked' : '' %> onclick="deleteStep('<%= step.step_id %>')" />
                   </div>
                 </div>

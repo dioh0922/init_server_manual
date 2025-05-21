@@ -68,5 +68,5 @@ app.all('*', (req, res) => {
 */
 
 app.listen(port, hostname, () => {
-  console.log('runnnin');
+  console.log('server start');
 })
