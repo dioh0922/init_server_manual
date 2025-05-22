@@ -10,22 +10,54 @@
 </head>
 <body>
   <div class="container text-center">
-    <div class="row ">
-      <div class="col">
-        <form action="./init" method="get">
-          <button type="submit" class="btn btn-secondary">サーバ初期設定</button>
+    <div class="row">
+      <div class="col-sm-12">
+        <form action="./init" id="initForm" method="get">
+          <button type="button" class="my-1 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#initModal">サーバ初期設定</button>
         </form>
       </div>
     </div>
 
     <div class="row ">
-      <div class="col">
+      <div class="col-sm-12">
         <form action="./list" method="get">
-          <button type="submit" class="btn btn-secondary">実施手順一覧</button>
+          <button type="submit" class="my-1 btn btn-secondary">実施手順一覧</button>
         </form>
+      </div>
+    </div>
+
+    <div class="modal fade" id="initModal" tabindex="-1" aria-labelledby="modelLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-body">
+            <input id="pswd" value=""/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            <button type="button" class="btn btn-primary" onclick="submitCheck()">開始</button>
+          </div>
+        </div>
       </div>
     </div>
 
   </div>
+<script>
+  function submitCheck(){
+    const pswd = document.getElementById('pswd').value;
+    fetch('/login',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ pswd: pswd })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if(data === true){
+        document.getElementById('initForm').submit();
+      }
+    })
+  }
+</script>
 </body>
 </html>
