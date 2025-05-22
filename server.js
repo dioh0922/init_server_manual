@@ -9,6 +9,9 @@ const port = 4200;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'template'));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/init', async (req, res) => {
   try {
     await dbClient.initManualBatch();
@@ -48,6 +51,20 @@ app.delete('/api/delete/:id', async(req, res) => {
   }catch(err){
     console.log(err);
     res.status(500).send('delete error');
+  }
+});
+
+app.post('/login', (req, res) => {
+  try{
+    const settingPass = process.env.PASSWORD;
+    let result = false;
+    if(req.body?.pswd === settingPass){
+      result = true;
+    }
+    res.status(200).send(result);
+  }catch(err){
+    console.log(err);
+    res.status(500).send('login error');
   }
 });
 
